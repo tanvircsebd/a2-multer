@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Fetch Multiple Images</title>
+  </head>
+  <body>
+    <h1>Fetch Multiple Images</h1>
+    <input type="number" id="num-images" placeholder="Number of images" min="1" />
+    <button id="fetch-images">Fetch Images</button>
+    <div id="image-container"></div>
+
+    <script>
+      document.getElementById("fetch-images").addEventListener("click", () => {
+        const numImages = document.getElementById("num-images").value || 1;
+        // console.log(numImages)
+        const query = `http://localhost:3000/fetch-multiple?num=${numImages}`;
+        console.log(`Fetching ${numImages} images with query: ${query}`);
+        // fetch(`/fetch-multiple?num=${numImages}`)
+        fetch(query)
+          .then((response) => {
+            console.log(response)
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then((imagePaths) => {
+            const imageContainer = document.getElementById("image-container");
+            imageContainer.innerHTML = ""; // Clear previous images
+            imagePaths.forEach((imagePath) => {
+              fetch(imagePath)
+                .then((response) => {
+                  if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                  }
+                  return response.blob();
+                })
+                .then((imageBlob) => {
+                  const imageObjectURL = URL.createObjectURL(imageBlob);
+                  const img = document.createElement("img");
+                  img.src = imageObjectURL;
+                  img.width = 400;
+                  imageContainer.appendChild(img);
+                })
+                .catch((error) => console.error("Error fetching image:", error));
+            });
+          })
+          .catch((error) => console.error("Error fetching images:", error));
+      });
+    </script>
+  </body>
+</html>

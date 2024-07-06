@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.pagination {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.pagination a {
+    display: inline-block;
+    margin: 0 5px;
+    padding: 8px 16px;
+    text-decoration: none;
+    color: #007BFF;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination a:hover {
+    background-color: #007BFF;
+    color: white;
+}
+
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.image-item {
+    overflow: hidden;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.image-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s;
+}
+
+.image-item:hover img {
+    transform: scale(1.05);
+}
+
+    </style>
+</head>
+<body>
+    <h1>Image Gallery</h1>
+    <div class="pagination">
+         <%if(first){%>
+            <a href="<%=first%>">First</a>
+        <%}%>
+        <!-- <%if(first){%>
+            <a href="<%=first%>">First</a>
+        <%}%> -->
+        <%if(prev){%>
+            <a href="<%=prev%>">Prev</a>
+        <%}%>
+        <%pages.forEach(page=>{%>
+            <%console.log("check", page.number)%>
+            <a href="<%=page.url%>"><%page.number%></a>
+       <%})%>
+       <%if(next){%>
+            <a href="<%=next%>">Next</a>
+        <%}%>
+        <%if(last){%>
+            <a href="<%=last%>">Last</a>
+        <%}%>
+    </div>
+
+    <div class="image-grid">
+        <%images.forEach(image=>{%>
+
+            <div class="image-item">
+                <img src="/upload/<%=image%>" alt="Image">
+            </div>
+        <%})%>
+    </div>
+</body>
+</html>
